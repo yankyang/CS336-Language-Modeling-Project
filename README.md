@@ -28,19 +28,22 @@ The project aims to build, train, and evaluate a transformer-based language mode
 ---
 
 ## 🧩 Repository Structure
+
+```bash
 CS336-Language-Modeling-Project/
-├── data/ # Datasets or download links
-├── src/ # Core source code
-│ ├── tokenizer.py # Tokenization & vocabulary creation
-│ ├── model.py # Transformer model definition
-│ ├── train.py # Training loop and evaluation
-│ └── utils.py # Helper functions
-├── configs/ # Configuration files (YAML format)
-│ ├── base.yaml # Default experiment setup
-│ └── scaling.yaml # Example config for scaling analysis
-├── notebooks/ # Jupyter notebooks for visualizations
-├── reports/ # Final report or analysis paper
-└── README.md # Project documentation (this file)
+├── data/                   # Datasets or download links
+├── src/                    # Core source code
+│   ├── tokenizer.py        # Tokenization & vocabulary creation
+│   ├── model.py            # Transformer model definition
+│   ├── train.py            # Training loop and evaluation
+│   └── utils.py            # Helper functions
+├── configs/                # Configuration files (YAML format)
+│   ├── base.yaml           # Default experiment setup
+│   └── scaling.yaml        # Example config for scaling analysis
+├── notebooks/              # Jupyter notebooks for visualizations
+├── reports/                # Final report or analysis paper
+└── README.md               # Project documentation (this file)
+
 
 
 ---
