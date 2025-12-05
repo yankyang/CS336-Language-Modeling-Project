@@ -29,106 +29,85 @@ CS336-Language-Modeling-Project/
 ├── README.md
 └── LICENSE
 
+Quick Start
 
----
+Step 1: Create environment
 
-## 🚀 Quick Start
-
-### 1. Install environment
-
-```bash
 python3 -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
+source .venv/bin/activate
 pip install -r requirements.txt
 
-### 2. Prepare data
-
-Place your training text under:
+Step 2: Prepare data
+Place your training file at:
 data/tiny_corpus.txt
-You can use any plain-English text.
-🧠 Train the Tiny Transformer
-python -m src.train \
-  --data_path data/tiny_corpus.txt \
-  --block_size 64 \
-  --batch_size 32 \
-  --n_epochs 5
 
+You may use any plain English text.
+
+Training
+
+Run the training script:
+
+python -m src.train
+--data_path data/tiny_corpus.txt
+--block_size 64
+--batch_size 32
+--n_epochs 5
 
 This will:
 
-build a vocabulary → data/vocab.json
+Build a vocabulary file at data/vocab.json
 
-train the LM
+Train a tiny Transformer model
 
-save checkpoints → checkpoints/epoch_*.pt
+Save checkpoints under checkpoints/
 
-✨ Generate Text
+Text Generation
 
-After training, run:
+Use a trained checkpoint to generate text:
 
-python -m src.sampling \
-  --checkpoint checkpoints/epoch_3.pt \
-  --vocab_path data/vocab.json \
-  --prompt "once upon a time" \
-  --max_new_tokens 80 \
-  --temperature 0.8 \
-  --top_k 20
-
+python -m src.sampling
+--checkpoint checkpoints/epoch_3.pt
+--vocab_path data/vocab.json
+--prompt "once upon a time"
+--max_new_tokens 80
+--temperature 0.8
+--top_k 20
 
 Example output:
-
 once upon a time in a small village a traveler carried a book of stories...
 
-📏 Evaluate Perplexity
-python -m src.eval_ppl \
-  --data_path data/tiny_corpus.txt \
-  --checkpoint checkpoints/epoch_3.pt \
-  --vocab_path data/vocab.json \
-  --block_size 64 \
-  --batch_size 32
+Perplexity Evaluation
 
+Compute perplexity on a text file:
 
-Output:
+python -m src.eval_ppl
+--data_path data/tiny_corpus.txt
+--checkpoint checkpoints/epoch_3.pt
+--vocab_path data/vocab.json
+--block_size 64
+--batch_size 32
 
+Example:
 Perplexity: 21.84
 
-📓 Optional: Notebook Demo
+Model Architecture
 
-The project supports Jupyter Notebook.
-You can create a notebook under notebooks/ and reuse the modules:
-
-from src.tokenizer import Tokenizer
-from src.model import TinyTransformerLM
-from src.sampling import sample
-
-🔧 Model Architecture (Tiny)
-
-Embedding + learned positional embeddings
-
+Embedding layer with learned positional embeddings
 Multi-head self-attention (causal mask)
-
 Feed-forward MLP
-
-LayerNorm + residual connections
-
+LayerNorm and residual connections
 Linear output projection to vocab logits
 
-This small model is ideal for learning:
+This project helps understand:
+How attention works
+How next-token prediction functions
+How perplexity measures language model quality
 
-how attention works
+Future Improvements
 
-how an LM predicts next tokens
-
-how perplexity relates to LM quality
-
-📌 Future Improvements (Optional Ideas)
-
-Add validation split + early stopping
-
-Implement BPE tokenizer
-
-Add multi-layer attention visualizations
-
-Train on larger corpora (TinyStories, WikiText)
-
-Export to ONNX or TorchScript
+Optional extensions:
+Add validation split and early stopping
+Use BPE or subword tokenizer
+Visualize attention maps
+Train using larger corpora such as TinyStories or WikiText
+Export model to ONNX or TorchScript
