@@ -1,66 +1,139 @@
-# CS336: Language Modeling from Scratch (Stanford, Spring 2025)
+CS336 Language Modeling Project — Tiny Transformer from Scratch
 
-**Instructor:** Prof. Percy Liang, Prof. Tatsunori Hashimoto  
-**Course Website:** [https://stanford-cs336.github.io/spring2025/](https://stanford-cs336.github.io/spring2025/)  
-**Author:** Yankai Yang ([@yankykyang](https://github.com/yankykyang))  
+This project is my personal implementation inspired by Stanford CS336 (Language Modeling from Scratch).
+It builds a minimal end-to-end language model training pipeline using only basic PyTorch modules:
 
----
+Word-level tokenizer
 
-## 🧠 Overview
+Tiny Transformer LM (attention + MLP + positional embeddings)
 
-This repository contains my course project for **Stanford CS336: Language Modeling from Scratch (Spring 2025)**.  
-The project aims to build, train, and evaluate a transformer-based language model from scratch, while exploring how model architecture, data scale, and reasoning depth affect performance and generalization.
+Training loop (checkpoint saving included)
 
----
+Simple evaluation (perplexity)
 
-## 🎯 Project Objectives
+Sampling (text generation)
 
-- Implement a **minimal yet extensible transformer language model** without relying on high-level frameworks.  
-- Train the model on curated subsets of **WikiText** and **OpenWebText** to study scaling behavior and perplexity trends.  
-- Experiment with **tokenization strategies** (BPE, byte-level, unigram) and evaluate their impact on convergence and loss.  
-- Conduct ablation studies on:
-  - Model depth and number of attention heads  
-  - Context window size  
-  - Learning rate schedule and optimizer choice  
-- Visualize loss curves, gradient norms, and performance trade-offs.  
-- (Future work) Extend to reasoning-augmented or alignment-aware variants, connecting with research directions such as **ReasAlign**.
+Notebook-friendly structure for experiments
 
----
+This project is for self-study and portfolio purposes.
+It is not an official assignment submission.
 
-## 🧩 Repository Structure
+Project Structure
 
-```bash
 CS336-Language-Modeling-Project/
-├── data/                   # Datasets or download links
-├── src/                    # Core source code
-│   ├── tokenizer.py        # Tokenization & vocabulary creation
-│   ├── model.py            # Transformer model definition
-│   ├── train.py            # Training loop and evaluation
-│   └── utils.py            # Helper functions
-├── configs/                # Configuration files (YAML format)
-│   ├── base.yaml           # Default experiment setup
-│   └── scaling.yaml        # Example config for scaling analysis
-├── notebooks/              # Jupyter notebooks for visualizations
-├── reports/                # Final report or analysis paper
-└── README.md               # Project documentation (this file)
+src/
+tokenizer.py – Word-level tokenizer
+model.py – Tiny Transformer model
+dataset.py – Next-token dataset
+train.py – Training script
+sampling.py – Text generation
+eval_ppl.py – Perplexity evaluation
+data/
+tiny_corpus.txt – Small training corpus
+checkpoints/ – Saved model checkpoints
+requirements.txt
+README.md
+LICENSE
 
+Quick Start
 
+Install environment:
 
----
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 
-## ⚙️ Environment Setup
+Prepare data:
 
-### 1. Clone the repository
-```bash
-git clone https://github.com/yankykyang/CS336-Language-Modeling-Project.git
-cd CS336-Language-Modeling-Project
+Put any English text into:
+data/tiny_corpus.txt
 
-### 2. Create environment
-conda create -n cs336 python=3.10
-conda activate cs336
-pip install torch datasets tqdm matplotlib numpy
+Train the Tiny Transformer
 
-### 3. Run baseline training
-python src/train.py --config configs/base.yaml
+python -m src.train
+--data_path data/tiny_corpus.txt
+--block_size 64
+--batch_size 32
+--n_epochs 5
 
+This will:
+• Build vocabulary → data/vocab.json
+• Train the LM
+• Save checkpoints → checkpoints/epoch_*.pt
 
+Generate Text
+
+python -m src.sampling
+--checkpoint checkpoints/epoch_3.pt
+--vocab_path data/vocab.json
+--prompt "once upon a time"
+--max_new_tokens 80
+--temperature 0.8
+--top_k 20
+
+Example output:
+
+once upon a time in a small village a traveler carried a book of stories...
+
+Evaluate Perplexity
+
+python -m src.eval_ppl
+--data_path data/tiny_corpus.txt
+--checkpoint checkpoints/epoch_3.pt
+--vocab_path data/vocab.json
+--block_size 64
+--batch_size 32
+
+Output:
+
+Perplexity: 21.84
+
+Optional: Notebook Demo
+
+You can create Jupyter notebooks using:
+
+from src.tokenizer import Tokenizer
+from src.model import TinyTransformerLM
+from src.sampling import sample
+
+Use notebooks for interactive experiments, forward pass visualization, or text generation.
+
+Model Architecture (Tiny)
+
+Embedding + learned positional embeddings
+
+Multi-head self-attention with causal mask
+
+Feed-forward MLP
+
+LayerNorm + residual connections
+
+Linear output projection to vocabulary logits
+
+This tiny model highlights:
+
+How attention works
+
+How next-token prediction behaves
+
+How perplexity measures LM quality
+
+Future Improvements
+
+Add validation split + early stopping
+
+Implement BPE tokenizer
+
+Train on larger corpora (TinyStories, WikiText)
+
+Visualize attention maps
+
+Add unit tests and benchmarks
+
+License
+
+MIT License.
+
+Acknowledgements
+
+Inspired by Stanford CS336 “Language Modeling from Scratch”.
